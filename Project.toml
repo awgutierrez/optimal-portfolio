@@ -1,6 +1,2 @@
-[deps]
-CSV
-DataFrames
-
 [compat]
 julia = "1.8"
