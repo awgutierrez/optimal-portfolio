@@ -18,9 +18,9 @@ Efficient portfolio:
 
 **Portfolio optimization model**
         
-   - $n\times N$ matrix of returns $R=(r_{ij})$, where $n$ assets, $N$ trading days
-   - coherent measure of risk $\rho:\mathbb{R}^N\to\mathbb{R}$
-   - $\Delta^n = \{ z\in\mathbb{R}_{\geq 0}^n : \sum_{i=1}^{n}z_i = 1 \}$
+   - $$n\times N$$ matrix of returns $$R=(r_{ij})$$, where $$n$$ assets, $$N$$ trading days
+   - coherent measure of risk $$\rho:\mathbb{R}^N\to\mathbb{R}$$
+   - $$\Delta^n = \{ z\in\mathbb{R}_{\geq 0}^n \mid \sum_{i=1}^{n}z_i = 1 \}$$
 
 **Portfolio optimization model**
 
@@ -136,10 +136,8 @@ data[!,["ticker","timestamp","adjclose"]]
 
 
 ## Calculating daily returns
-$
- \text{daily return} = \log\Big(\frac{\text{today's adjusted closing price}}
-             {\text{yesterday's adjusted closing price}}\Big)
-$
+
+$$\text{daily return} = \log\Big(\frac{\text{today's adjusted closing price}}{\text{yesterday's adjusted closing price}}\Big)$$
 
 
 ```julia
@@ -165,18 +163,16 @@ DataFrame(Matrix(R),:auto)
 
 
 ## Representation of coherent risk measure
-$\rho:\mathbb{R}^N\to\mathbb{R}$ has the form
-$$
-    \rho(R^\intercal z) = \max_{q\in A}
-    \Bigl\{-\sum_{j=1}^{N}q_j\sum_{i=1}^{n}r_{ij}z_i\Bigl\},
-$$
-where $A$ is a closed convex subset of $\Delta^N$.
+$$\rho:\mathbb{R}^N\to\mathbb{R}$$ has the form
+
+$$\rho(R^\intercal z) = \max_{q\in A}\Bigl\{-\sum_{j=1}^{N}q_j\sum_{i=1}^{n}r_{ij}z_i\Bigl\},$$
+where $$A$$ is a closed convex subset of $\Delta^N$.
 
 To describe $A$ we assume $R$ follows certain probability distribution.
 
 
 ## Assumption : daily returns are equally likely scenarios
-$p_j = \text{Prob}(R^\intercal z = \sum_{i=1}^{n}r_{ij}z_i)$ for each trading day $j=1,...,N$
+$$p_j = \text{Prob}(R^\intercal z = \sum_{i=1}^{n}r_{ij}z_i)$$ for each trading day $$j=1,...,N$$
 
 
 ```julia
@@ -184,45 +180,28 @@ p = (1/N)*ones(N);
 ```
 
 ## Portfolio optimization model as min-max problem
-$$
-    \min_{z\in\Delta^n}\max_{q\in A}
-    \Bigl\{-\sum_{j=1}^{N}q_j\sum_{i=1}^{n}r_{ij}z_i\Bigl\}
-$$
+
+$$\min_{z\in\Delta^n}\max_{q\in A}\Bigl\{-\sum_{j=1}^{N}q_j\sum_{i=1}^{n}r_{ij}z_i\Bigl\}$$
 
 __Optimal solution $(z^*,q^*)$ to this zero-sum game exists due to von Neumann's minmax theorem.__
 
 ## Mean-semideviation model
 
-Suppose $\lambda\in[0,1]$. Consider the risk measure 
+Suppose $$\lambda\in[0,1]$$. Consider the risk measure $$\rho(R^\intercal z) = -\mathbb{E}(R^\intercal z) + \lambda\sigma_1(R^\intercal z)$$, where $$\sigma_1(R^\intercal z)=\mathbb{E}\max\{\mathbb{E}(R^\intercal z)-R^\intercal z, 0\}$$
 
-$$
-    \rho(R^\intercal z) = -\mathbb{E}(R^\intercal z) 
-        + \lambda\sigma_1(R^\intercal z),
-$$
+For the given probability distribution $$p$$, we have
 
-where $\sigma_1(R^\intercal z)=\mathbb{E}
-\max\{\mathbb{E}(R^\intercal z)-R^\intercal z, 0\}$
+$$\rho(R^\intercal z) = -\langle p,R^\intercal z \rangle + \lambda\sum_{j=1}^{N}p_j\max\{\langle p,R^\intercal z \rangle - \langle r_{\cdot j},z \rangle ,0\}$$
 
-For the given probability distribution $p$, we have
-
-$$
-   \rho(R^\intercal z) = -\langle p,R^\intercal z \rangle 
-   + \lambda\sum_{j=1}^{N}p_j\max\{\langle p,R^\intercal z \rangle 
-   - \langle r_{\cdot j},z \rangle ,0\}
-$$
 and
 
-$$ A = \{(1-\lambda\sum_{j=1}^{N}g_j)p
-+ \lambda g : |g_j|\leq p_j,\;\forall\;j=1,...,N\}$$
+$$A = \{(1-\lambda\sum_{j=1}^{N}g_j)p + \lambda g : |g_j|\leq p_j,\;\forall\;j=1,...,N\}$$
 
 ## Mean-semideviation model
 
-$$
-\begin{align}
- &\min\; -\langle p,R^\intercal z \rangle + \lambda\sum_{j=1}^{N}p_j\max\{\langle p,R^\intercal z \rangle - \langle r_{\cdot j},z \rangle ,0\} \\
- &\text{ s.t.}\quad z\in\mathbb{R}^n, \quad z_i\geq 0\;\forall\; i=1,...,n, \quad \sum_{i=1}^{n}z_i = 1
-\end{align}
-$$
+$$\begin{aligned}
+&\min\; -\langle p,R^\intercal z \rangle + \lambda\sum_{j=1}^{N}p_j\max\{\langle p,R^\intercal z \rangle - \langle r_{\cdot j},z \rangle ,0\} \\ 
+&\text{ s.t.}\quad z\in\mathbb{R}^n, \quad z_i\geq 0\;\forall\; i=1,...,n, \quad \sum_{i=1}^{n}z_i = 1 \end{aligned}$$
 
 
 ```julia
