@@ -164,8 +164,7 @@ DataFrame(Matrix(R),:auto)
 
 ## Representation of coherent risk measure
 $$\rho:\mathbb{R}^N\to\mathbb{R}$$ has the form
-
-$$\rho(R^\intercal z) = \max_{q\in A}\Bigl\{-\sum_{j=1}^{N}q_j\sum_{i=1}^{n}r_{ij}z_i\Bigl\},$$
+$$\rho(R^\intercal z) = \max_{q\in A}\{-\sum_{j=1}^{N}q_j\sum_{i=1}^{n}r_{ij}z_i\}$$,
 where $$A$$ is a closed convex subset of $\Delta^N$.
 
 To describe $A$ we assume $R$ follows certain probability distribution.
