@@ -20,7 +20,7 @@ Efficient portfolio:
         
    - $$n\times N$$ matrix of returns $$R=(r_{ij})$$, where $$n$$ assets, $$N$$ trading days
    - coherent measure of risk $$\rho:\mathbb{R}^N\to\mathbb{R}$$
-   - $$\Delta^n = \{ z\in\mathbb{R}_{\geq 0}^n \mid \sum_{i=1}^{n}z_i = 1 \}$$
+   - $$\Delta^n = \{z\in\mathbb{R}_{\geq 0}^n \mid \sum_{i=1}^{n}z_i = 1\}$$
 
 **Portfolio optimization model**
 
