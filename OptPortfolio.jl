@@ -13,7 +13,7 @@ Tickers = DataFrame(CSV.File("SP500tickers.csv"))
 
 #Selecting some tickers randomly from all the 
 #s&p500 tickers
-n_init = 30; 
+n_init = 40;
 
 sTickers = sample(axes(Tickers, 1), n_init; 
         replace = false, ordered = true);
