@@ -9,7 +9,7 @@ using HiGHS
 using Plots
 
 #Loading list of tickers of S&P 500 index
-Tickers = DataFrame(CSV.File("SP500tickers.csv"))
+Tickers = DataFrame(CSV.File("SP500tickers.csv", stringtype=String))
 
 #Selecting some tickers randomly from all the 
 #s&p500 tickers
@@ -22,8 +22,8 @@ Assets = Tickers[sTickers,1];
 
 #Getting daily stock prices from Yahoo! Finance
 data = get_prices.(Assets,
-        startdt="2023-01-8",
-        enddt="2024-05-30",
+        startdt="2015-01-01",
+        enddt="2026-05-08",
         throw_error=true);
 		
 data = data |> DataFrame
@@ -71,7 +71,7 @@ p = (1/N)*ones(N);
 
 #Mean-semideviation model
 m = Model(HiGHS.Optimizer); set_silent(m);
-lambda = 0.8;
+lambda = 0.6;
 
 @variable(m, z[i=1:n] >= 0.0)     
 @variable(m, s[j=1:N] >= 0.0) 
